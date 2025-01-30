@@ -56,6 +56,10 @@
         "optional": "cpp",
         "ratio": "cpp",
         "sstream": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "algorithm": "cpp",
+        "list": "cpp",
+        "map": "cpp",
+        "xtree": "cpp"
     }
 }

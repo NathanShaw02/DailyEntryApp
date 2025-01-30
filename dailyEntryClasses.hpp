@@ -4,6 +4,7 @@
 #include <ctime>
 #include <chrono>
 #include <iomanip>
+#include "asciiImages.hpp"
 
 class DailyEntry{
     int rating;
@@ -21,7 +22,9 @@ class DailyEntry{
 };
 
 DailyEntry::DailyEntry(){
-    std::cout<<"How was your mood today?   (1-10)"<<std::endl;
+    amogus();
+    std::cout<<"\n------------------------------------------";
+    std::cout<<"\nHow was your mood today?   (1-10)"<<std::endl;
     int userRating;
     //validation here
     std::cin>>userRating;
@@ -39,6 +42,8 @@ DailyEntry::DailyEntry(){
     //std::cin>>usersNotesPt1;
     std::getline(std::cin,usersNotesPt1);
     std::getline(std::cin,usersNotesPt2);
+    
+    std::cout<<"\n__________________________________________";
     std::cout<<"\n";
     std::string fullUserInput = usersNotesPt1+usersNotesPt2;
 
@@ -56,6 +61,7 @@ DailyEntry::DailyEntry(){
 void DailyEntry::print(){
 
     std::cout<<"|Todays Rating: "<<rating<<"|Days Sober Status: "<<soberStatus<<"|\nTodays Notes:\n\n"<<(todaysNotes);
+    std::cout<<"\n------------------------------------------";
 }
 
 
@@ -72,3 +78,5 @@ void DailyEntry::printToFile(){
 
     myFile.close();
 }
+
+
