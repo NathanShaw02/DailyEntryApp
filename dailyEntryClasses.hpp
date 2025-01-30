@@ -12,10 +12,6 @@ class DailyEntry{
     std::string todaysNotes;
     public:
     DailyEntry(); //constructor for a new entry
-    void setRating(int inp);
-    int getRating();
-    void setSober(char inp);
-    char getSoberStatus();
     void print(); //used for printing current objects data to console 
     void printToFile();//used for printing objects data to txt file
 
@@ -24,21 +20,53 @@ class DailyEntry{
 DailyEntry::DailyEntry(){
     amogus();
     std::cout<<"\n------------------------------------------";
+
+    //-----Finding last line
+    std::ifstream myFileR("dailyEntryDatabase.txt", std::ios::binary);
+    myFileR.seekg(0,std::ios::end);//move  pointer to last character in file
+    std::streamoff fileSize = myFileR.tellg();//gets the position EG the size of file since it is the last line
+    std::string lastLine;//declares a string that will hold the last line of the file
+
+    for(std::streamoff i = fileSize - 1; i >= 0; i--){//will iterate through whole file unless it finds a line break
+        myFileR.seekg(i,std::ios::beg);//moves pointer to current position
+        char ch;
+        myFileR.get(ch);//retireves character from current position
+        if(ch=='\n'){//if its a new line, we have finished extraction
+            break;
+        }
+        lastLine = ch+lastLine;//concatonates string
+    }
+    myFileR.close();//closes file
+    std::cout<<"Last line: "<<lastLine;
+    //extracting date
+    std::string entryDate;
+    for(int i = 0; i < 10; i++){//std date format so we know how long it will be
+        entryDate = entryDate+lastLine[i];
+    }
+    std::cout<<"Date = "<<entryDate;
+    //comparing if date matches todays
+
+
+    //IF LINE FROM TODAY DOES NOT EXIST DO THIS // IF NOT JUST NOTES AND APPEND LAST LINE
+    int userRating = 0;
     std::cout<<"\nHow was your mood today?   (1-10)"<<std::endl;
-    int userRating;
-    //validation here
     std::cin>>userRating;
-    std::cout<<"\nWere you sober today?   (y/n)"<<std::endl;
+    while(userRating<1||userRating>10){
+        std::cout<<"\nPlease enter a whole number between 1 and 10   (1-10)\n"<<std::endl;
+        std::cin>>userRating;
+    }
     char isUserSober;
+    std::cout<<"\nWere you sober today?   (y/n)"<<std::endl;
     std::cin>>isUserSober;
+    isUserSober = std::tolower(isUserSober);
+    while(isUserSober!='y'&&isUserSober!='n'){
+        std::cout<<"\nPlease enter either Y or N\n"<<std::endl;
+        std::cin>>isUserSober;
+    }
     
-    //validation here
     std::cout<<"\nAny notes about today you would like to make?\n";
     std::string usersNotesPt1, usersNotesPt2;
-    /*using the getline method for the full input was breaking it by not waiting for user input
-    fixed this by having a normal input as one variable and storing the rest of the sentence (which is left in the buffer) in a 2nd variable
-    then both strings added together to get final product :)
-    */
+
     //std::cin>>usersNotesPt1;
     std::getline(std::cin,usersNotesPt1);
     std::getline(std::cin,usersNotesPt2);

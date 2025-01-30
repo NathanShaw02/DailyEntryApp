@@ -48,3 +48,6 @@ Writing to file
 2025-01-30|6|N|sgsdgs
 2025-01-30|10|N|I added amogus to c++
 2025-01-30|7|Y|First test from console, looking good!
+2025-01-30|1|N|Got 1/3 validations done
+2025-01-30|7|N|man taht was a goofy error
+2025-01-30|7|N|h
