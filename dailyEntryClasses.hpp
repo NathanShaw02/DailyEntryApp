@@ -4,7 +4,26 @@
 #include <ctime>
 #include <chrono>
 #include <iomanip>
+#include <cstdlib>
 #include "asciiImages.hpp"
+
+std::string singleDigitDateFormatting(int inp){
+    std::string newString;
+    if(inp>0&&inp<10){
+        newString = "0"+std::to_string(inp);
+    }else{
+        newString = std::to_string(inp);
+    }
+    return newString;
+}
+
+std::string getCurrentDate(){
+    time_t now = time(0);//gets current time based on system
+    tm* localTime = localtime(&now);//declares a tm pointer that = now which has been converted from a time_t value to a tm struct using localtime()
+    std::string currentDate = std::to_string(1900+localTime->tm_year)+"-"+singleDigitDateFormatting(localTime->tm_mon+1)+"-"+singleDigitDateFormatting(localTime->tm_mday);//retrueves the year,month and date and formats it. tm_year stores number of years since 1900, tm_mon holds an int for the month starting at 0
+    return currentDate;
+}
+
 
 class DailyEntry{
     int rating;
@@ -38,13 +57,34 @@ DailyEntry::DailyEntry(){
     }
     myFileR.close();//closes file
     std::cout<<"Last line: "<<lastLine;
+
     //extracting date
     std::string entryDate;
     for(int i = 0; i < 10; i++){//std date format so we know how long it will be
         entryDate = entryDate+lastLine[i];
     }
     std::cout<<"Date = "<<entryDate;
+
     //comparing if date matches todays
+    if(entryDate==getCurrentDate()){
+        std::cout<<"\nYou already have an entry logged for today!\nWould you like to add any notes? (y/n)";
+        char userInputYN;
+        std::cin>>userInputYN;
+        userInputYN = std::tolower(userInputYN);
+        while(userInputYN!='y'&&userInputYN!='n'){
+            std::cout<<"\nPlease enter either Y or N\n"<<std::endl;
+            std::cin>>userInputYN;
+            userInputYN = std::tolower(userInputYN);
+        }
+        if(userInputYN == 'y'){
+            //add notes to entry
+        }else{
+            exit(0);//program terminates if you dont want to do anything
+        }
+    
+    }else{
+        //do full entry
+    }
 
 
     //IF LINE FROM TODAY DOES NOT EXIST DO THIS // IF NOT JUST NOTES AND APPEND LAST LINE
@@ -62,6 +102,7 @@ DailyEntry::DailyEntry(){
     while(isUserSober!='y'&&isUserSober!='n'){
         std::cout<<"\nPlease enter either Y or N\n"<<std::endl;
         std::cin>>isUserSober;
+        isUserSober = std::tolower(isUserSober);
     }
     
     std::cout<<"\nAny notes about today you would like to make?\n";
@@ -94,15 +135,11 @@ void DailyEntry::print(){
 
 
 void DailyEntry::printToFile(){
-    //get todays date
-    auto now = std::chrono::system_clock::now(); //returns a "time_point" object  and assigns it to now || using the auto type here as simpler than specifying the exact type which would be std::chrono::time_point<std::chrono::system_clock>
-    std::time_t now_time = std::chrono::system_clock::to_time_t(now);//converts the time_point object now into time_t data type
-    std::tm* tm_ptr = std::localtime(&now_time);//converting to tm structure to get a formatted date
-
 
     std::ofstream myFile("dailyEntryDatabase.txt",std::ios::app);
-    myFile<<"\n"<<std::put_time(tm_ptr,"%Y-%m-%d")<<"|"<<rating<<"|"<<soberStatus<<"|"<<todaysNotes;
 
+    std::string todaysDate = getCurrentDate();
+    myFile<<"\n"<<todaysDate<<"|"<<rating<<"|"<<soberStatus<<"|"<<todaysNotes;
 
     myFile.close();
 }
