@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include "asciiImages.hpp"
 
-std::string singleDigitDateFormatting(int inp){
+std::string singleDigitDateFormatting(int inp){//ensures that if it is a single digit a 0 is added in front
     std::string newString;
     if(inp>0&&inp<10){
         newString = "0"+std::to_string(inp);
@@ -33,6 +33,7 @@ class DailyEntry{
     DailyEntry(); //constructor for a new entry
     void print(); //used for printing current objects data to console 
     void printToFile();//used for printing objects data to txt file
+    void addAdditionalNotesToFile(std::string newNotes);
 
 };
 
@@ -78,52 +79,95 @@ DailyEntry::DailyEntry(){
         }
         if(userInputYN == 'y'){
             //add notes to entry
+            std::cout<<"\nEnter the additional notes:"<<std::endl;
+            std::string newNotesPt1, newNotesPt2;
+            std::getline(std::cin,newNotesPt1);
+            std::getline(std::cin,newNotesPt2);
+            std::string fullUserInput = newNotesPt1+newNotesPt2;
+            todaysNotes = todaysNotes+fullUserInput;//we dont do anything else with this value at the moment but thought it should be added regardless
+            addAdditionalNotesToFile(fullUserInput);
         }else{
             exit(0);//program terminates if you dont want to do anything
         }
     
     }else{
-        //do full entry
+        int userRating = 0;
+        std::cout<<"\nHow was your mood today?   (1-10)"<<std::endl;
+        std::cin>>userRating;
+        while(userRating<1||userRating>10){
+            std::cout<<"\nPlease enter a whole number between 1 and 10   (1-10)\n"<<std::endl;
+            std::cin>>userRating;
+        }
+        char isUserSober;
+        std::cout<<"\nWere you sober today?   (y/n)"<<std::endl;
+        std::cin>>isUserSober;
+        isUserSober = std::tolower(isUserSober);
+        while(isUserSober!='y'&&isUserSober!='n'){
+            std::cout<<"\nPlease enter either Y or N\n"<<std::endl;
+            std::cin>>isUserSober;
+            isUserSober = std::tolower(isUserSober);
+        }
+        
+        std::cout<<"\nAny notes about today you would like to make?\n";
+        std::string usersNotesPt1, usersNotesPt2;
+
+        //std::cin>>usersNotesPt1;
+        std::getline(std::cin,usersNotesPt1);
+        std::getline(std::cin,usersNotesPt2);
+        
+        std::cout<<"\n__________________________________________";
+        std::cout<<"\n";
+        std::string fullUserInput = usersNotesPt1+usersNotesPt2;
+
+        rating = userRating;
+        if(isUserSober=='y'){
+            soberStatus = 'Y';
+        }else{
+            soberStatus = 'N';
+        }
+
+        todaysNotes = fullUserInput;
+        this->printToFile();
     }
 
 
     //IF LINE FROM TODAY DOES NOT EXIST DO THIS // IF NOT JUST NOTES AND APPEND LAST LINE
-    int userRating = 0;
-    std::cout<<"\nHow was your mood today?   (1-10)"<<std::endl;
-    std::cin>>userRating;
-    while(userRating<1||userRating>10){
-        std::cout<<"\nPlease enter a whole number between 1 and 10   (1-10)\n"<<std::endl;
-        std::cin>>userRating;
-    }
-    char isUserSober;
-    std::cout<<"\nWere you sober today?   (y/n)"<<std::endl;
-    std::cin>>isUserSober;
-    isUserSober = std::tolower(isUserSober);
-    while(isUserSober!='y'&&isUserSober!='n'){
-        std::cout<<"\nPlease enter either Y or N\n"<<std::endl;
-        std::cin>>isUserSober;
-        isUserSober = std::tolower(isUserSober);
-    }
+    // int userRating = 0;
+    // std::cout<<"\nHow was your mood today?   (1-10)"<<std::endl;
+    // std::cin>>userRating;
+    // while(userRating<1||userRating>10){
+    //     std::cout<<"\nPlease enter a whole number between 1 and 10   (1-10)\n"<<std::endl;
+    //     std::cin>>userRating;
+    // }
+    // char isUserSober;
+    // std::cout<<"\nWere you sober today?   (y/n)"<<std::endl;
+    // std::cin>>isUserSober;
+    // isUserSober = std::tolower(isUserSober);
+    // while(isUserSober!='y'&&isUserSober!='n'){
+    //     std::cout<<"\nPlease enter either Y or N\n"<<std::endl;
+    //     std::cin>>isUserSober;
+    //     isUserSober = std::tolower(isUserSober);
+    // }
     
-    std::cout<<"\nAny notes about today you would like to make?\n";
-    std::string usersNotesPt1, usersNotesPt2;
+    // std::cout<<"\nAny notes about today you would like to make?\n";
+    // std::string usersNotesPt1, usersNotesPt2;
 
-    //std::cin>>usersNotesPt1;
-    std::getline(std::cin,usersNotesPt1);
-    std::getline(std::cin,usersNotesPt2);
+    // //std::cin>>usersNotesPt1;
+    // std::getline(std::cin,usersNotesPt1);
+    // std::getline(std::cin,usersNotesPt2);
     
-    std::cout<<"\n__________________________________________";
-    std::cout<<"\n";
-    std::string fullUserInput = usersNotesPt1+usersNotesPt2;
+    // std::cout<<"\n__________________________________________";
+    // std::cout<<"\n";
+    // std::string fullUserInput = usersNotesPt1+usersNotesPt2;
 
-    rating = userRating;
-    if(isUserSober=='y'){
-        soberStatus = 'Y';
-    }else{
-        soberStatus = 'N';
-    }
+    // rating = userRating;
+    // if(isUserSober=='y'){
+    //     soberStatus = 'Y';
+    // }else{
+    //     soberStatus = 'N';
+    // }
 
-    todaysNotes = fullUserInput;
+    // todaysNotes = fullUserInput;
 }
 
 
@@ -140,6 +184,14 @@ void DailyEntry::printToFile(){
 
     std::string todaysDate = getCurrentDate();
     myFile<<"\n"<<todaysDate<<"|"<<rating<<"|"<<soberStatus<<"|"<<todaysNotes;
+
+    myFile.close();
+}
+
+void DailyEntry::addAdditionalNotesToFile(std::string newNotes){
+
+    std::ofstream myFile("dailyEntryDatabase.txt",std::ios::app);
+    myFile<<" Additional Notes: "<<newNotes;
 
     myFile.close();
 }
