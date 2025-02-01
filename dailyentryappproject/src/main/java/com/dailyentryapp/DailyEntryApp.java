@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
+import com.dailyentryapp.dayEntry;
 
 
 
@@ -34,7 +35,7 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
 
     @Override
     public void start(Stage myApp){//starts the applicaiton with the stage titled myApp
-        //scene declaration
+        //----------------------------------------HOME SCREEN---------------------------------------------
         GridPane root = new GridPane();//declares a GridPane
         Scene homeScene = new Scene(root,1600,1000);//declares the home page screen with a gridPane root 
 
@@ -68,6 +69,8 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
         root.getColumnConstraints().addAll(col0,col1);
 
         root.getRowConstraints().addAll(row0,row1,row2);
+
+
         //what we are putting on the screen
         myApp.setTitle("MyDailyEntryTracker");//gives window a title
 
@@ -85,7 +88,6 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
         VBox soberStreakVbox = new VBox(10,soberStreakTitle,soberStreak);
         soberStreakVbox.setPadding(new Insets(10));
         soberStreakVbox.setAlignment(Pos.CENTER);
-        //root.setValignment(soberStreakVbox, VPos.CENTER);
         root.add(soberStreakVbox, 1,1);
 
 
@@ -102,7 +104,6 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
 
         //root gridpane rows and columns || setting constraints
 
-        //diaryPagePane.getColumnConstraints().addAll(col0,col1);
         ColumnConstraints diaryColumn = new ColumnConstraints();
         diaryColumn.setPercentWidth(100);
         diaryColumn.setHalignment(HPos.CENTER);
@@ -136,6 +137,10 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
             @Override
             public void handle(ActionEvent event){
                 System.out.println("goto Diary Button Pressed :D");
+                //get last line of file
+                dayEntry newEntry = new dayEntry();
+                newEntry.getLatestEntry(todaysText);
+                System.out.println();
                 homeScene.setRoot(diaryPagePane);
             }
         });
