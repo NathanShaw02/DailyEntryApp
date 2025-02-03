@@ -26,7 +26,7 @@ import javafx.scene.control.TextArea;
 
 
 public class DailyEntryApp extends Application {//creates a class called "DailyEntryApp" which is a derived class of the applicaiton class
-
+    
     @Override
     public void start(Stage myApp){//starts the applicaiton with the stage titled myApp
         //----------------------------------------HOME SCREEN---------------------------------------------
@@ -128,6 +128,7 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
          * 
          * SET TEXT AS DATE: done
          * 
+         * 
          */
         Button diaryPageButton = new Button("Diary Page");
         diaryPageButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -135,8 +136,28 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
             public void handle(ActionEvent event){
                 //get last line of file
                 dayEntry newEntry = new dayEntry();
+                
                 todaysText.setText(newEntry.getLine(0));
                 //System.out.println(newEntry.getLine(2));
+                //update date label with new date [DONE]
+                //get newDate = labelText;
+                //get currentDate
+                //convert newDate to dates type to date type
+                //compare dates using type function
+                //currentDateOffset
+                //while currentDate!=newDate
+                    //
+                    //try
+                        //textLine = read oneline prior.strip(only date)
+                    //textLineDate = textLine.strip() //to extract only date
+            
+                    //if textLineDate = newDate matches one on the txt line
+                        //get and update diary entry
+                        //textLine-date = entry
+                    //else
+                        //currentDate = textLineDate  (or some other variable)
+                
+
                 displayDateLabel.setText(newEntry.getDate());
                 //totalOffset=0;
                 homeScene.setRoot(diaryPagePane);
@@ -147,8 +168,26 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
             @Override
             public void handle(ActionEvent event){
                 dayEntry newEntry = new dayEntry();
-                //++totalOffset;
-                //todaysText.setText(newEntry.getLine(totalOffset));
+                //update date label with new date 
+                //get newDate = labelText;
+                //get currentDate
+                //convert newDate to dates type to date type
+                //compare dates using type function
+                //currentDateOffset
+                //while currentDate!=newDate
+                    //
+                    //try
+                        //textLine = read oneline prior.strip(only date)
+                        //textLineDate = textLine.strip() //to extract only date
+                
+                        //if textLineDate = newDate matches one on the txt line
+                            //get and update diary entry
+                            //textLine-date = entry
+                        //else
+                            //currentDate = textLineDate  (or some other variable)
+                    //except nothing found
+                        //disable button.
+                
             }
         });
         root.add(diaryPageButton,1,2);
