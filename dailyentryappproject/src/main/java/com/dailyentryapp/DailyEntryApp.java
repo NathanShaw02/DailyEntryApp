@@ -2,8 +2,6 @@ package com.dailyentryapp;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.layout.ColumnConstraints;
@@ -20,11 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
-import com.dailyentryapp.dayEntry;
 
-
-
-import java.io.IOException;
 
 /**
  * JavaFX App
@@ -110,13 +104,8 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
         diaryPagePane.getColumnConstraints().add(diaryColumn);
         diaryPagePane.getRowConstraints().addAll(row0,row1,row2);
 
-        Button prevDateButton = new Button(" < ");
-        Button nextDateButton = new Button(" > ");
         Label displayDateLabel = new Label("todays Date");
-        HBox diaryDateHBox = new HBox();
-        diaryDateHBox.getChildren().addAll(prevDateButton,displayDateLabel,nextDateButton);
-        diaryPagePane.add(diaryDateHBox,0,0);
-        diaryDateHBox.setAlignment(Pos.CENTER);
+
         TextArea todaysText = new TextArea();
         diaryPagePane.add(todaysText,0,1);
         Button homeButton = new Button("Home");
@@ -128,25 +117,45 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
         });
 
         diaryPagePane.add(homeButton,0,2);
-
-
-
-
+        int totalOffset = 0;
+        Button prevDateButton = new Button(" < ");
+        Button nextDateButton = new Button(" > ");
+        HBox diaryDateHBox = new HBox();
+        diaryDateHBox.getChildren().addAll(prevDateButton,displayDateLabel,nextDateButton);
+        diaryPagePane.add(diaryDateHBox,0,0);
+        diaryDateHBox.setAlignment(Pos.CENTER);
+        /* THE PLAN
+         * 
+         * SET TEXT AS DATE: done
+         * 
+         */
         Button diaryPageButton = new Button("Diary Page");
         diaryPageButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event){
-                System.out.println("goto Diary Button Pressed :D");
                 //get last line of file
                 dayEntry newEntry = new dayEntry();
-                newEntry.getLatestEntry(todaysText);
-                System.out.println();
+                todaysText.setText(newEntry.getLine(0));
+                //System.out.println(newEntry.getLine(2));
+                displayDateLabel.setText(newEntry.getDate());
+                //totalOffset=0;
                 homeScene.setRoot(diaryPagePane);
+            }
+        });
+
+        nextDateButton.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event){
+                dayEntry newEntry = new dayEntry();
+                //++totalOffset;
+                //todaysText.setText(newEntry.getLine(totalOffset));
             }
         });
         root.add(diaryPageButton,1,2);
 
-        
+
+
+
         //assigning the scene and showing it
         myApp.setScene(homeScene);//sets the scene on the stage
         myApp.show();//Reveals the curtain to the stage and shows the first scene

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
+
 import javafx.scene.control.TextArea;
 
 
@@ -13,6 +14,7 @@ public class dayEntry {
     int moodRating;
     char soberStatus;
     String todaysNotes;
+    String todaysDate;
 
     String getDate(){
         return date;
@@ -71,6 +73,7 @@ public class dayEntry {
         }
     }
     String getLine(int offset){
+        ++offset;
         String filePath = "dailyEntryDatabase.txt";
         try(RandomAccessFile myDatabase = new RandomAccessFile(filePath, "r")){//using RandomAccessFile as it allows us to access the file from a custom point (in this instance last entry) which will save us iterating over the whole file
             long length = myDatabase.length();//gets length of file
@@ -92,6 +95,9 @@ public class dayEntry {
                     if(numberOfNewLines == offset){
                         break;
                     }else{
+                        //System.out.println("at this point lastLine is: "+lastLine);
+                        lastLine.setLength(0);
+                        characterPosition--;
                         continue;
                     }
                 }else{
@@ -101,6 +107,7 @@ public class dayEntry {
                 characterPosition--;//moves character position once character back
             }
             String finalLastline = lastLine.toString();
+            setDate(finalLastline.substring(0,10));
             finalLastline = finalLastline.substring(15,finalLastline.length());
             return finalLastline;
         }catch (IOException e){
@@ -109,5 +116,6 @@ public class dayEntry {
         return "";
         }
     }
+
 }
 
