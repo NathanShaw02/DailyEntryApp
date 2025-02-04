@@ -109,6 +109,8 @@ public class dayEntry {
             String finalLastline = lastLine.toString();
             setDate(finalLastline.substring(0,10));
             finalLastline = finalLastline.substring(15,finalLastline.length());
+            todaysNotes = finalLastline;
+            todaysDate = finalLastline.substring(0,10);
             return finalLastline;
         }catch (IOException e){
         System.out.println("Error with file!\n");

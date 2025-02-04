@@ -26,7 +26,7 @@ import javafx.scene.control.TextArea;
 
 
 public class DailyEntryApp extends Application {//creates a class called "DailyEntryApp" which is a derived class of the applicaiton class
-    
+
     @Override
     public void start(Stage myApp){//starts the applicaiton with the stage titled myApp
         //----------------------------------------HOME SCREEN---------------------------------------------
@@ -124,6 +124,8 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
         diaryDateHBox.getChildren().addAll(prevDateButton,displayDateLabel,nextDateButton);
         diaryPagePane.add(diaryDateHBox,0,0);
         diaryDateHBox.setAlignment(Pos.CENTER);
+
+        Label iterator = new Label("0");
         /* THE PLAN
          * 
          * SET TEXT AS DATE: done
@@ -138,25 +140,6 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
                 dayEntry newEntry = new dayEntry();
                 
                 todaysText.setText(newEntry.getLine(0));
-                //System.out.println(newEntry.getLine(2));
-                //update date label with new date [DONE]
-                //get newDate = labelText;
-                //get currentDate
-                //convert newDate to dates type to date type
-                //compare dates using type function
-                //currentDateOffset
-                //while currentDate!=newDate
-                    //
-                    //try
-                        //textLine = read oneline prior.strip(only date)
-                    //textLineDate = textLine.strip() //to extract only date
-            
-                    //if textLineDate = newDate matches one on the txt line
-                        //get and update diary entry
-                        //textLine-date = entry
-                    //else
-                        //currentDate = textLineDate  (or some other variable)
-                
 
                 displayDateLabel.setText(newEntry.getDate());
                 //totalOffset=0;
@@ -164,30 +147,63 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
             }
         });
 
+        prevDateButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event){
+                dayEntry currentDay = new dayEntry();
+                currentDay.getLine(0);
+                //String latestDateInFile = currentDay.getDate();
+                dayEntry newEntry = new dayEntry();
+                String dateCurerrentlyDisplayted = displayDateLabel.getText();
+                //update date label with new date 
+                String myString = iterator.getText();
+                int myInt = Integer.parseInt(myString);
+                myInt--;
+                newEntry.getLine(myInt);
+                System.out.println("dateCurerrentlyDisplayted = "+dateCurerrentlyDisplayted+"   newEntry.getDate = "+newEntry.getDate());
+                if(dateCurerrentlyDisplayted.equals(currentDay.getDate())){
+                    System.out.println("End of file");
+                    prevDateButton.setDisable(true);
+                }else{
+                    iterator.setText(String.valueOf(myInt));
+                    System.out.println("My hidden label has value: "+iterator.getText());
+                    todaysText.setText(newEntry.getLine(myInt));
+                    displayDateLabel.setText(newEntry.getDate());
+                    if(nextDateButton.isDisabled()){
+                        nextDateButton.setDisable(false);
+                    }
+
+            }
+            }
+        });
+
+
         nextDateButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
                 dayEntry newEntry = new dayEntry();
+                String dateCurerrentlyDisplayted = displayDateLabel.getText();
                 //update date label with new date 
-                //get newDate = labelText;
-                //get currentDate
-                //convert newDate to dates type to date type
-                //compare dates using type function
-                //currentDateOffset
-                //while currentDate!=newDate
-                    //
-                    //try
-                        //textLine = read oneline prior.strip(only date)
-                        //textLineDate = textLine.strip() //to extract only date
-                
-                        //if textLineDate = newDate matches one on the txt line
-                            //get and update diary entry
-                            //textLine-date = entry
-                        //else
-                            //currentDate = textLineDate  (or some other variable)
-                    //except nothing found
-                        //disable button.
-                
+                String myString = iterator.getText();
+                int myInt = Integer.parseInt(myString);
+                myInt++;
+                newEntry.getLine(myInt);
+                System.out.println("dateCurerrentlyDisplayted = "+dateCurerrentlyDisplayted+"   newEntry.getDate = "+newEntry.getDate());
+                if(dateCurerrentlyDisplayted.equals(newEntry.getDate())){
+                    System.out.println("End of file");
+                    nextDateButton.setDisable(true);
+                }else{
+                    iterator.setText(String.valueOf(myInt));
+                    System.out.println("My hidden label has value: "+iterator.getText());
+                    todaysText.setText(newEntry.getLine(myInt));
+                    displayDateLabel.setText(newEntry.getDate());
+                    if(prevDateButton.isDisabled()){
+                        prevDateButton.setDisable(false);
+                    }
+
+            }
+    
+
             }
         });
         root.add(diaryPageButton,1,2);
