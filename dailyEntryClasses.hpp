@@ -64,7 +64,6 @@ DailyEntry::DailyEntry(){
     for(int i = 0; i < 10; i++){//std date format so we know how long it will be
         entryDate = entryDate+lastLine[i];
     }
-    std::cout<<"Date = "<<entryDate;
 
     //comparing if date matches todays
     if(entryDate==getCurrentDate()){
@@ -127,47 +126,9 @@ DailyEntry::DailyEntry(){
         }
 
         todaysNotes = fullUserInput;
-        this->printToFile();
+        //this->printToFile();
     }
 
-
-    //IF LINE FROM TODAY DOES NOT EXIST DO THIS // IF NOT JUST NOTES AND APPEND LAST LINE
-    // int userRating = 0;
-    // std::cout<<"\nHow was your mood today?   (1-10)"<<std::endl;
-    // std::cin>>userRating;
-    // while(userRating<1||userRating>10){
-    //     std::cout<<"\nPlease enter a whole number between 1 and 10   (1-10)\n"<<std::endl;
-    //     std::cin>>userRating;
-    // }
-    // char isUserSober;
-    // std::cout<<"\nWere you sober today?   (y/n)"<<std::endl;
-    // std::cin>>isUserSober;
-    // isUserSober = std::tolower(isUserSober);
-    // while(isUserSober!='y'&&isUserSober!='n'){
-    //     std::cout<<"\nPlease enter either Y or N\n"<<std::endl;
-    //     std::cin>>isUserSober;
-    //     isUserSober = std::tolower(isUserSober);
-    // }
-    
-    // std::cout<<"\nAny notes about today you would like to make?\n";
-    // std::string usersNotesPt1, usersNotesPt2;
-
-    // //std::cin>>usersNotesPt1;
-    // std::getline(std::cin,usersNotesPt1);
-    // std::getline(std::cin,usersNotesPt2);
-    
-    // std::cout<<"\n__________________________________________";
-    // std::cout<<"\n";
-    // std::string fullUserInput = usersNotesPt1+usersNotesPt2;
-
-    // rating = userRating;
-    // if(isUserSober=='y'){
-    //     soberStatus = 'Y';
-    // }else{
-    //     soberStatus = 'N';
-    // }
-
-    // todaysNotes = fullUserInput;
 }
 
 

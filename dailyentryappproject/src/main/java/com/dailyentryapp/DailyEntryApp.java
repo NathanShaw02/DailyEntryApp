@@ -200,10 +200,7 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
                     if(prevDateButton.isDisabled()){
                         prevDateButton.setDisable(false);
                     }
-
             }
-    
-
             }
         });
         root.add(diaryPageButton,1,2);

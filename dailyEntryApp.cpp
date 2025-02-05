@@ -3,8 +3,7 @@
 int main(){
 
     DailyEntry myEntry;
-    //myEntry.print();
-    //myEntry.printToFile();
+    myEntry.printToFile();
 
     return 0;
 }
