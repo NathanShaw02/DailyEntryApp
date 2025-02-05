@@ -78,7 +78,8 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
         
         //sober streak vbox
         Label soberStreakTitle = new Label("Current Sober Streak:");
-        Label soberStreak = new Label("0");
+        dayEntry soberEntry = new dayEntry();
+        Label soberStreak = new Label(Integer.toString(soberEntry.getSoberStreak()));//gets sober streak and converts to int
         VBox soberStreakVbox = new VBox(10,soberStreakTitle,soberStreak);
         soberStreakVbox.setPadding(new Insets(10));
         soberStreakVbox.setAlignment(Pos.CENTER);
@@ -117,7 +118,6 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
         });
 
         diaryPagePane.add(homeButton,0,2);
-        int totalOffset = 0;
         Button prevDateButton = new Button(" < ");
         Button nextDateButton = new Button(" > ");
         HBox diaryDateHBox = new HBox();
@@ -125,27 +125,20 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
         diaryPagePane.add(diaryDateHBox,0,0);
         diaryDateHBox.setAlignment(Pos.CENTER);
 
-        Label iterator = new Label("0");
-        /* THE PLAN
-         * 
-         * SET TEXT AS DATE: done
-         * 
-         * 
-         */
-        Button diaryPageButton = new Button("Diary Page");
+        Button diaryPageButton = new Button("Diary Page");//loads the diary page and sets the textArea and date label with appropriate values
         diaryPageButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event){
                 //get last line of file
-                dayEntry newEntry = new dayEntry();
-                
+                dayEntry newEntry = new dayEntry();    
+                newEntry.getSoberStreak();
                 todaysText.setText(newEntry.getLine(0));
-
                 displayDateLabel.setText(newEntry.getDate());
-                //totalOffset=0;
                 homeScene.setRoot(diaryPagePane);
             }
         });
+
+        Label diaryPageOffset = new Label("0");//holds the offset from the latest entry that should be displayed (EG 2 lines before first would be = 2 // first would be 0)
 
         prevDateButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -156,7 +149,7 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
                 dayEntry newEntry = new dayEntry();
                 String dateCurerrentlyDisplayted = displayDateLabel.getText();
                 //update date label with new date 
-                String myString = iterator.getText();
+                String myString = diaryPageOffset.getText();
                 int myInt = Integer.parseInt(myString);
                 myInt--;
                 newEntry.getLine(myInt);
@@ -165,8 +158,8 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
                     System.out.println("End of file");
                     prevDateButton.setDisable(true);
                 }else{
-                    iterator.setText(String.valueOf(myInt));
-                    System.out.println("My hidden label has value: "+iterator.getText());
+                    diaryPageOffset.setText(String.valueOf(myInt));
+                    System.out.println("My hidden label has value: "+diaryPageOffset.getText());
                     todaysText.setText(newEntry.getLine(myInt));
                     displayDateLabel.setText(newEntry.getDate());
                     if(nextDateButton.isDisabled()){
@@ -184,7 +177,7 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
                 dayEntry newEntry = new dayEntry();
                 String dateCurerrentlyDisplayted = displayDateLabel.getText();
                 //update date label with new date 
-                String myString = iterator.getText();
+                String myString = diaryPageOffset.getText();
                 int myInt = Integer.parseInt(myString);
                 myInt++;
                 newEntry.getLine(myInt);
@@ -193,17 +186,14 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
                     System.out.println("End of file");
                     nextDateButton.setDisable(true);
                 }else{
-                    iterator.setText(String.valueOf(myInt));
-                    System.out.println("My hidden label has value: "+iterator.getText());
+                    diaryPageOffset.setText(String.valueOf(myInt));
+                    System.out.println("My hidden label has value: "+diaryPageOffset.getText());
                     todaysText.setText(newEntry.getLine(myInt));
                     displayDateLabel.setText(newEntry.getDate());
                     if(prevDateButton.isDisabled()){
                         prevDateButton.setDisable(false);
                     }
-
             }
-    
-
             }
         });
         root.add(diaryPageButton,1,2);

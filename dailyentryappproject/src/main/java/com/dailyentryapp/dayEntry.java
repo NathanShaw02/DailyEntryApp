@@ -108,8 +108,27 @@ public class dayEntry {
             }
             String finalLastline = lastLine.toString();
             setDate(finalLastline.substring(0,10));
-            finalLastline = finalLastline.substring(15,finalLastline.length());
+
+            //setting mood rating
+            String unfinalisedMoodRating = finalLastline.substring(11,13);
+            int characterOffset = 0;//holds the offset for if there is a double digit mood entry
+            if(unfinalisedMoodRating.indexOf("|")!=-1){//index of returns -1 if it is not present, therefore if | is in the string it needs to be stripped and the rest of the ALSO COULD HAVE JUST CHECKED IF ITS 10 AS THIS IS THE ONLY CASE IT WILL ALLOW but i guess this way has its merit too
+                //strip end character
+                unfinalisedMoodRating = unfinalisedMoodRating.substring(0, 1);
+                moodRating = Integer.parseInt(unfinalisedMoodRating);
+            }else{
+                characterOffset++;
+            }
+            moodRating = Integer.parseInt(unfinalisedMoodRating);
+
+            //setting soberSatus
+            soberStatus = (finalLastline.substring(13+characterOffset,14+characterOffset)).charAt(0);//extracts the Y/N value then converts to character
+            System.out.println("Sober Status ="+ soberStatus);
+            //setting todaysNotes
+            finalLastline = finalLastline.substring(15+characterOffset,finalLastline.length());
             todaysNotes = finalLastline;
+
+            //setting todaysDate
             todaysDate = finalLastline.substring(0,10);
             return finalLastline;
         }catch (IOException e){
@@ -118,6 +137,20 @@ public class dayEntry {
         return "";
         }
     }
+
+    int getSoberStreak(){
+        String prevLineDate = "nothing";
+        this.getLine(0);
+        System.out.println("Hi hopefully here are todays notes: "+todaysNotes);
+        int streak = 0;
+        while(soberStatus!='N'&&(prevLineDate.equals(date)==false)){//loops until it finds an instance of not being sober or the end of the file
+            streak++;
+            prevLineDate = date;
+            this.getLine(streak);
+        }
+        return streak;
+    }
+
 
 }
 
