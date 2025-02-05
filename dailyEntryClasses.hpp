@@ -57,7 +57,6 @@ DailyEntry::DailyEntry(){
         lastLine = ch+lastLine;//concatonates string
     }
     myFileR.close();//closes file
-    std::cout<<"Last line: "<<lastLine;
 
     //extracting date
     std::string entryDate;
