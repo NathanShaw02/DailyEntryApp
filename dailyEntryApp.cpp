@@ -3,7 +3,9 @@
 int main(){
 
     DailyEntry myEntry;
-    myEntry.printToFile();
 
+    if(myEntry.getProcessedToday()==false){
+        myEntry.printToFile();
+    }
     return 0;
 }

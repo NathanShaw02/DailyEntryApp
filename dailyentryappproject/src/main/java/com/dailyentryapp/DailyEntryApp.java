@@ -1,6 +1,9 @@
 package com.dailyentryapp;
 
+
+
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -17,7 +20,12 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
+import javafx.collections.ObservableList;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Font;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 
 /**
@@ -29,6 +37,11 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
 
     @Override
     public void start(Stage myApp){//starts the applicaiton with the stage titled myApp
+        //Fonts and such
+
+        Font titleFont = new Font("roberto",36);
+        Font buttonFont = new Font("calibri",18);
+
         //----------------------------------------HOME SCREEN---------------------------------------------
         GridPane root = new GridPane();//declares a GridPane
         Scene homeScene = new Scene(root,1600,1000);//declares the home page screen with a gridPane root 
@@ -68,18 +81,59 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
         //what we are putting on the screen
         myApp.setTitle("MyDailyEntryTracker");//gives window a title
 
-        Label usernameLabel = new Label("My Username");
+        Label usernameLabel = new Label("History:");
+        usernameLabel.setFont(titleFont);
         root.add(usernameLabel, 0, 0);
-        Label experienceLabel = new Label("XP: 0/0");
-        root.add(experienceLabel, 1, 0);
+        //Label experienceLabel = new Label("XP: 0/0");
+        //root.add(experienceLabel, 1, 0);
 
-        DatePicker moodCalendar = new DatePicker();
-        root.add(moodCalendar,0,1);
+
+        //adding tableview
+        TableView<dayEntry> recentDays = new TableView<>();//creates a tableview for type dayEntry
+        recentDays.setMaxWidth(600);
+
+        ObservableList<dayEntry> tableData = FXCollections.observableArrayList();//making an observableArrayList for the data
+
+        ////geting and adding the data
+        int lastSevenDaysIterator = 0;
+        dayEntry newDataEntry = new dayEntry();
+
+        while(lastSevenDaysIterator<35){//retrieves last 7 days / lines in file
+            String oldDate = newDataEntry.getDate();
+            newDataEntry.getLine(lastSevenDaysIterator);
+            String newDate = newDataEntry.getDate();
+            System.out.println("old date: "+oldDate+"    new date: "+newDate);
+            if(newDate.equals(oldDate)){//validation for if there is less than 7 lines new date must be first here as oldDate is null at the beginning and breaks the program if it attempts to look if  null is equal to something
+                break;
+            }
+            tableData.add(new dayEntry(newDataEntry.getDate(),newDataEntry.getMoodRating(),newDataEntry.getSoberStatus()));
+            lastSevenDaysIterator++;
+        }
+
+        recentDays.setItems(tableData);
+        
+        TableColumn<dayEntry, String> dateColumn = new TableColumn<>("Date");//defines a column called date
+        dateColumn.setMinWidth(200);
+        dateColumn.setCellValueFactory(new PropertyValueFactory<dayEntry,String>("date"));//assigns the object property "date" to the column
+
+        TableColumn<dayEntry, Integer> moodRatingColumn = new TableColumn<>("Mood");
+        moodRatingColumn.setMinWidth(200);
+        moodRatingColumn.setCellValueFactory(new PropertyValueFactory<dayEntry,Integer>("moodRating"));
+
+        TableColumn<dayEntry, Character> soberStatusColumn = new TableColumn<>("Sober");
+        soberStatusColumn.setMinWidth(200);
+        soberStatusColumn.setCellValueFactory(new PropertyValueFactory<dayEntry,Character>("soberStatus"));
+
+        recentDays.getColumns().addAll(dateColumn,moodRatingColumn,soberStatusColumn);
+
+        root.add(recentDays,0,1);
         
         //sober streak vbox
         Label soberStreakTitle = new Label("Current Sober Streak:");
+        soberStreakTitle.setFont(titleFont);
         dayEntry soberEntry = new dayEntry();
         Label soberStreak = new Label(Integer.toString(soberEntry.getSoberStreak()));//gets sober streak and converts to int
+        soberStreak.setFont(new Font("Arial",36));
         VBox soberStreakVbox = new VBox(10,soberStreakTitle,soberStreak);
         soberStreakVbox.setPadding(new Insets(10));
         soberStreakVbox.setAlignment(Pos.CENTER);
@@ -106,10 +160,15 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
         diaryPagePane.getRowConstraints().addAll(row0,row1,row2);
 
         Label displayDateLabel = new Label("todays Date");
+        displayDateLabel.setFont(buttonFont);
 
         TextArea todaysText = new TextArea();
+        todaysText.setFont(new Font("Calibri",16));
         diaryPagePane.add(todaysText,0,1);
+        diaryPagePane.setPadding(new Insets(50,100,50,100));
+        
         Button homeButton = new Button("Home");
+        homeButton.setFont(buttonFont);
         homeButton.setOnAction(new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event){
@@ -119,13 +178,17 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
 
         diaryPagePane.add(homeButton,0,2);
         Button prevDateButton = new Button(" < ");
+        prevDateButton.setFont(buttonFont);
         Button nextDateButton = new Button(" > ");
+        nextDateButton.setFont(buttonFont);
         HBox diaryDateHBox = new HBox();
+        diaryDateHBox.setSpacing(30);
         diaryDateHBox.getChildren().addAll(prevDateButton,displayDateLabel,nextDateButton);
         diaryPagePane.add(diaryDateHBox,0,0);
         diaryDateHBox.setAlignment(Pos.CENTER);
 
         Button diaryPageButton = new Button("Diary Page");//loads the diary page and sets the textArea and date label with appropriate values
+        diaryPageButton.setFont(buttonFont);
         diaryPageButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event){

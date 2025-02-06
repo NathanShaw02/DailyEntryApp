@@ -29,11 +29,14 @@ class DailyEntry{
     int rating;
     char soberStatus;
     std::string todaysNotes;
+    bool processedToday = false;
     public:
     DailyEntry(); //constructor for a new entry
     void print(); //used for printing current objects data to console 
     void printToFile();//used for printing objects data to txt file
     void addAdditionalNotesToFile(std::string newNotes);
+    std::string getTodaysNotes();
+    bool getProcessedToday();
 
 };
 
@@ -57,7 +60,6 @@ DailyEntry::DailyEntry(){
         lastLine = ch+lastLine;//concatonates string
     }
     myFileR.close();//closes file
-    std::cout<<"Last line: "<<lastLine;
 
     //extracting date
     std::string entryDate;
@@ -85,6 +87,7 @@ DailyEntry::DailyEntry(){
             std::string fullUserInput = newNotesPt1+newNotesPt2;
             todaysNotes = todaysNotes+fullUserInput;//we dont do anything else with this value at the moment but thought it should be added regardless
             addAdditionalNotesToFile(fullUserInput);
+            processedToday = true;
         }else{
             exit(0);//program terminates if you dont want to do anything
         }
@@ -158,3 +161,10 @@ void DailyEntry::addAdditionalNotesToFile(std::string newNotes){
 }
 
 
+std::string DailyEntry::getTodaysNotes(){
+    return todaysNotes;
+}
+
+bool DailyEntry::getProcessedToday(){
+    return processedToday;
+}

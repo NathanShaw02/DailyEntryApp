@@ -16,21 +16,34 @@ public class dayEntry {
     String todaysNotes;
     String todaysDate;
 
-    String getDate(){
+    dayEntry(){
+        this.date = null;
+        this.moodRating = 0;
+        this.soberStatus = 'u';
+
+    }
+
+    dayEntry(String dateInp, int moodRatingInp, char soberStatusInp){
+        this.date = dateInp;
+        this.moodRating = moodRatingInp;
+        this.soberStatus = soberStatusInp;
+    }
+
+    public String getDate(){
         return date;
     }
     void setDate(String newDate){
         date = newDate;
     }
 
-    int getMoodRating(){
+    public int getMoodRating(){
         return moodRating;
     }
     void setMoodRating(int newMoodRating){
         moodRating = newMoodRating;
     }
 
-    char getSoberStatus(){
+    public char getSoberStatus(){
         return soberStatus;
     }
     void setSoberStatus(char newSoberStatus){
