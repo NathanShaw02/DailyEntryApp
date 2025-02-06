@@ -164,7 +164,7 @@ public class DailyEntryApp extends Application {//creates a class called "DailyE
                     displayDateLabel.setText(newEntry.getDate());
                     if(nextDateButton.isDisabled()){
                         nextDateButton.setDisable(false);
-                    }
+                    }`
 
             }
             }
